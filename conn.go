@@ -18,7 +18,7 @@ func (m Monime) Services() *services.Service {
 	return m.services
 }
 
-func New(conf Config, log logger.Logger, tracer tracing.Tracer) *Monime {
+func New(conf *Config, log logger.Logger, tracer tracing.Tracer) *Monime {
 	client := rest.New(conf.BaseURL, conf.Access, conf.Space, conf.Version, conf.TimeoutSec, log, tracer)
 	svc := services.NewService(client, log, tracer)
 
