@@ -9,8 +9,8 @@ import (
 	"github.com/ose-micro/core/logger"
 	"github.com/ose-micro/core/tracing"
 	"github.com/ose-micro/core/utils"
-	"github.com/ose-micro/monime/internal"
-	"github.com/ose-micro/monime/internal/common"
+	"github.com/ose-micro/monime/common"
+	"github.com/ose-micro/monime/rest"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
@@ -18,7 +18,7 @@ import (
 )
 
 type financialAccountService struct {
-	client *internal.HttpClient
+	client *rest.Client
 	log    logger.Logger
 	tracer tracing.Tracer
 }
@@ -165,7 +165,7 @@ func (f *financialAccountService) Update(ctx context.Context, cmd *UpdateCommand
 	return &data, nil
 }
 
-func NewService(client *internal.HttpClient, log logger.Logger, tracer tracing.Tracer) Service {
+func NewService(client *rest.Client, log logger.Logger, tracer tracing.Tracer) Service {
 	return &financialAccountService{
 		client: client,
 		log:    log,

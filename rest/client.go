@@ -1,4 +1,4 @@
-package internal
+package rest
 
 import (
 	"bytes"
@@ -18,7 +18,7 @@ import (
 	"go.uber.org/zap"
 )
 
-type HttpClient struct {
+type Client struct {
 	baseURL    string
 	access     string
 	version    string
@@ -29,9 +29,9 @@ type HttpClient struct {
 	tracer     tracing.Tracer
 }
 
-func NewHttpClient(baseURL, access, space, version string, timeout int, log logger.Logger,
-	tracer tracing.Tracer) *HttpClient {
-	return &HttpClient{
+func New(baseURL, access, space, version string, timeout int, log logger.Logger,
+	tracer tracing.Tracer) *Client {
+	return &Client{
 		baseURL:    baseURL,
 		access:     access,
 		space:      space,
@@ -43,7 +43,7 @@ func NewHttpClient(baseURL, access, space, version string, timeout int, log logg
 	}
 }
 
-func (c *HttpClient) Get(ctx context.Context, path string, body any, unmarshal func([]byte) (any, error)) (any, error) {
+func (c *Client) Get(ctx context.Context, path string, body any, unmarshal func([]byte) (any, error)) (any, error) {
 	var BUF io.Reader
 	METHOD := "GET"
 	TOKEN := fmt.Sprintf("Bearer %s", c.access)
@@ -158,7 +158,7 @@ func (c *HttpClient) Get(ctx context.Context, path string, body any, unmarshal f
 	return &out, nil
 }
 
-func (c *HttpClient) POST(ctx context.Context, path string, body any, headers map[string]string, unmarshal func([]byte) (any, error)) (any, error) {
+func (c *Client) POST(ctx context.Context, path string, body any, headers map[string]string, unmarshal func([]byte) (any, error)) (any, error) {
 	var buf io.Reader
 	method := "POST"
 	token := fmt.Sprintf("Bearer %s", c.access)
@@ -283,7 +283,7 @@ func (c *HttpClient) POST(ctx context.Context, path string, body any, headers ma
 	return &out, nil
 }
 
-func (c *HttpClient) PUT(ctx context.Context, path string, body any, headers map[string]string, unmarshal func([]byte) (any, error)) (any, error) {
+func (c *Client) PUT(ctx context.Context, path string, body any, headers map[string]string, unmarshal func([]byte) (any, error)) (any, error) {
 	method := "PUT"
 	token := fmt.Sprintf("Bearer %s", c.access)
 	var buf io.Reader
@@ -364,7 +364,7 @@ func (c *HttpClient) PUT(ctx context.Context, path string, body any, headers map
 	return &out, nil
 }
 
-func (c *HttpClient) DELETE(ctx context.Context, path string, body any, headers map[string]string, unmarshal func([]byte) (any, error)) (any, error) {
+func (c *Client) DELETE(ctx context.Context, path string, body any, headers map[string]string, unmarshal func([]byte) (any, error)) (any, error) {
 	method := "DELETE"
 	token := fmt.Sprintf("Bearer %s", c.access)
 	var buf io.Reader

@@ -3,12 +3,12 @@ package monime
 import (
 	"github.com/ose-micro/core/logger"
 	"github.com/ose-micro/core/tracing"
-	"github.com/ose-micro/monime/internal"
-	"github.com/ose-micro/monime/internal/services"
+	"github.com/ose-micro/monime/rest"
+	"github.com/ose-micro/monime/services"
 )
 
 type Monime struct {
-	httpClient *internal.HttpClient
+	httpClient *rest.Client
 	log        logger.Logger
 	tracer     tracing.Tracer
 	services   *services.Service
@@ -19,7 +19,7 @@ func (m Monime) Services() *services.Service {
 }
 
 func New(conf Config, log logger.Logger, tracer tracing.Tracer) *Monime {
-	client := internal.NewHttpClient(conf.BaseURL, conf.Access, conf.Space, conf.Version, conf.TimeoutSec, log, tracer)
+	client := rest.New(conf.BaseURL, conf.Access, conf.Space, conf.Version, conf.TimeoutSec, log, tracer)
 	svc := services.NewService(client, log, tracer)
 
 	return &Monime{

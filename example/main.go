@@ -8,7 +8,7 @@ import (
 	"github.com/ose-micro/core/tracing"
 	"github.com/ose-micro/core/utils"
 	"github.com/ose-micro/monime"
-	"github.com/ose-micro/monime/internal/services/checkout"
+	"github.com/ose-micro/monime/services/checkout"
 )
 
 func main() {

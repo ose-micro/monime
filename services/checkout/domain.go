@@ -3,7 +3,7 @@ package checkout
 import (
 	"context"
 
-	"github.com/ose-micro/monime/internal/common"
+	"github.com/ose-micro/monime/common"
 )
 
 type LineItems struct {
