@@ -1,19 +1,28 @@
 package financial_accounts
 
-import "context"
+import (
+	"context"
+
+	"github.com/ose-micro/monime/internal/common"
+)
+
+type Available struct {
+	Currency string  `json:"currency"`
+	Value    float32 `json:"value"`
+}
 
 type Balance struct {
-	Available float64 `json:"available"`
+	Available Available `json:"available"`
 }
 
 type Domain struct {
-	Id        string  `json:"id"`
-	Name      float64 `json:"name"`
-	Currency  string  `json:"currency"`
-	Reference string  `json:"reference"`
+	Id        string   `json:"id"`
+	Name      string   `json:"name"`
+	Currency  string   `json:"currency"`
+	Reference string   `json:"reference"`
 	Balance   *Balance `json:"balance"`
-	CreatedAt string  `json:"createdTime"`
-	UpdatedAt string  `json:"updatedTime"`
+	CreatedAt string   `json:"createTime"`
+	UpdatedAt string   `json:"updateTime"`
 }
 
 const (
@@ -22,9 +31,8 @@ const (
 )
 
 type Service interface {
-	Create(ctx context.Context, account CreateCommand) (*Domain, error)
-	Get(reference string) (*Domain, error)
-	Update(reference string, account Domain) (*Domain, error)
-	Delete(reference string) error
-	List(ctx context.Context) ([]Domain, error)
+	Create(ctx context.Context, cmd *CreateCommand) (*common.OneResponse[Domain], error)
+	Get(ctx context.Context, id string) (*common.OneResponse[Domain], error)
+	Update(ctx context.Context, cmd *UpdateCommand) (*common.OneResponse[Domain], error)
+	List(ctx context.Context) (*common.Response[Domain], error)
 }

@@ -7,22 +7,27 @@ import (
 	"github.com/ose-micro/cqrs"
 )
 
-// CreateCommand represents the command to create a financial account.
-type CreateCommand struct {
-	Name           string            `json:"name"`
-	Currency       string            `json:"currency"`
-	Reference      string            `json:"reference"`
-	Metadata       map[string]string `json:"metadata"`
+// UpdateCommand represents the command to create a financial account.
+type UpdateCommand struct {
+	Id        string            `json:"id"`
+	Name      string            `json:"name"`
+	Currency  string            `json:"currency"`
+	Reference string            `json:"reference"`
+	Metadata  map[string]string `json:"metadata"`
 }
 
 // CommandName implements cqrs.Command.
-func (c CreateCommand) CommandName() string {
+func (c UpdateCommand) CommandName() string {
 	return CREATED_COMMAND
 }
 
 // Validate implements cqrs.Command.
-func (c CreateCommand) Validate() error {
+func (c UpdateCommand) Validate() error {
 	fields := make([]string, 0)
+
+	if c.Id == "" {
+		fields = append(fields, "id is required")
+	}
 
 	if c.Currency == "" {
 		fields = append(fields, "currency is required")
@@ -43,4 +48,4 @@ func (c CreateCommand) Validate() error {
 	return nil
 }
 
-var _ cqrs.Command = CreateCommand{}
+var _ cqrs.Command = UpdateCommand{}

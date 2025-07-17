@@ -19,7 +19,7 @@ func (m Monime) Services() *services.Service {
 }
 
 func New(conf Config, log logger.Logger, tracer tracing.Tracer) *Monime {
-	client := internal.NewHttpClient(conf.BaseURL, conf.Access, conf.Space, conf.TimeoutSec, log, tracer)
+	client := internal.NewHttpClient(conf.BaseURL, conf.Access, conf.Space, conf.Version, conf.TimeoutSec, log, tracer)
 	svc := services.NewService(client, log, tracer)
 
 	return &Monime{

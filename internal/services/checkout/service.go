@@ -1,4 +1,4 @@
-package financial_accounts
+package checkout
 
 import (
 	"context"
@@ -32,7 +32,7 @@ func (f *financialAccountService) Create(ctx context.Context, command *CreateCom
 		attribute.String("payload", fmt.Sprintf("%+v", command))))
 
 	traceId := trace.SpanContextFromContext(ctx).TraceID().String()
-	if _, err := f.client.POST(ctx, "/financial-accounts", command, map[string]string{
+	if _, err := f.client.POST(ctx, "/checkout-sessions", command, map[string]string{
 		"Idempotency-Key": utils.GenerateUUID(),
 	}, func(b []byte) (any, error) {
 		if err := json.Unmarshal(b, &data); err != nil {
@@ -68,7 +68,7 @@ func (f *financialAccountService) List(ctx context.Context) (*common.Response[Do
 
 	traceId := trace.SpanContextFromContext(ctx).TraceID().String()
 
-	if _, err := f.client.Get(ctx, "/financial-accounts", nil, func(b []byte) (any, error) {
+	if _, err := f.client.Get(ctx, "/checkout-sessions", nil, func(b []byte) (any, error) {
 		if err := json.Unmarshal(b, &data); err != nil {
 			return nil, err
 		}
@@ -103,7 +103,7 @@ func (f *financialAccountService) Get(ctx context.Context, id string) (*common.O
 
 	traceId := trace.SpanContextFromContext(ctx).TraceID().String()
 
-	if _, err := f.client.Get(ctx, fmt.Sprintf("/financial-accounts/%s", id), nil, func(b []byte) (any, error) {
+	if _, err := f.client.Get(ctx, fmt.Sprintf("/checkout-sessions/%s", id), nil, func(b []byte) (any, error) {
 		if err := json.Unmarshal(b, &data); err != nil {
 			return nil, err
 		}
@@ -137,7 +137,7 @@ func (f *financialAccountService) Update(ctx context.Context, cmd *UpdateCommand
 
 	traceId := trace.SpanContextFromContext(ctx).TraceID().String()
 
-	url := fmt.Sprintf("/financial-accounts/%s", cmd.Id)
+	url := fmt.Sprintf("/checkout-sessions/%s", cmd.Id)
 	if _, err := f.client.PUT(ctx, url, cmd, map[string]string{
 		"Idempotency-Key": utils.GenerateUUID(),
 	}, func(b []byte) (any, error) {
