@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	config := monime.Config{
+	config := &monime.Config{
 		BaseURL:    "https://api2.monime.io/v1",
 		Access:     "mon_ojgk7W5vWiroQxJdnLuJJjos3yMAmXHXp0GNr1tsRlPNcK5Vlo1exAv5jRBLVQ2q",
 		Space:      "spc-k6CqF5G1HDnyHKtquDxqPKRt4p7",
